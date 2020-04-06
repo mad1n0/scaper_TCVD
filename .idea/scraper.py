@@ -168,5 +168,5 @@ class BetScraper():
 		# Dump all the data with CSV format
 		for i in range(len(self.data)):
 			for j in range(len(self.data[i])):
-				file.write(self.data[i][j] + ";");
-			file.write("\n");
+				file.write(self.data[i][j] + ";")
+			file.write("\n")
