@@ -1,6 +1,5 @@
 import scrapy
-
-import urllib3
+import requests
 import re
 import time
 from bs4 import BeautifulSoup
@@ -13,13 +12,13 @@ class BetScraper():
         self.url = "https://www.hltv.org/betting/money"
         self.subdomain = "betting/money.com"
         self.data = [] 
-        self.response = urllib3.PoolManager.request()
+        self.response = requests.get(self.url)
         
         
         
-    def __download_html(self,url):
-        http =  urllib3.PoolManager()
-        response = http.request('GET', url)
+    def __download_html(self, url):
+
+        response = requests.get(url)
 
 
 
@@ -27,18 +26,17 @@ class BetScraper():
         response = self.response
         url= self.url
         print ("This process could take roughly 45 minutes.\n")
-        html = self.__download_html(self, url)
-        bs = BeautifulSoup(response.data)
+        html = self.__download_html(url)
+        bs = BeautifulSoup(response.text)
         self.data.append(bs)
+
 
 
     def data2csv(self, filename):
 		# Overwrite to the specified file.
 		# Create it if it does not exist.
-        file = open("../csv/" + filename, "w+")
-
-		# Dump all the data with CSV format
-        for i in range(len(self.data)):
-            for j in range(len(self.data[i])):
-                file.write(self.data[i][j] + ";")
-            file.write("\n")
+        data = self.data
+        print(data)
+        
+        #file = open("./csv/" + 'bet2.csv', "w")
+        #file.write(hola)
