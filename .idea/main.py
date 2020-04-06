@@ -1,4 +1,4 @@
-import scraper
+from scraper import BetScraper
 
 output_file = "dataset.csv"
 
