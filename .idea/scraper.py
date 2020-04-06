@@ -1,11 +1,11 @@
 import scrapy
-import urllib2
+
+import urllib3
 import re
 import time
 from bs4 import BeautifulSoup
 from dateutil import parser
-from geopy.geocoders import Yandex
-from reason_classifier import ReasonClassifier
+
 
 class BetScraper():
 
@@ -13,10 +13,13 @@ class BetScraper():
 		self.url = "http://www.https://www.hltv.org/"
 		self.subdomain = "betting/money.com"
 		self.data = []
-
-	def __download_html(self, url):
-		response = urllib2.urlopen(url)
-		html = response.read()
+        
+        
+        
+    def __download_html(self,url):
+        http =  urllib3.PoolManager()
+        response = http.request('GET', url+ subdomain)
+		
 		return html
 
 	def __get_accidents_links(self, html):
@@ -146,18 +149,12 @@ class BetScraper():
 		return years_links
 
 	def scrape(self):
-		print "Web Scraping of planes' crashes data from " + \
-			"'" + self.url + "'..."
 
-		print "This process could take roughly 45 minutes.\n"
 
-		# Start timer
-		start_time = time.time()
+		print ("This process could take roughly 45 minutes.\n")
 
-		# Download HTML
 		html = self.__download_html(self.url + self.subdomain)
-		bs = BeautifulSoup(html, 'html.parser')
-        sel.data.append(html)
+		bs = BeautifulSoup(response.data.decode('utf-8'))
 
 
 	def data2csv(self, filename):
