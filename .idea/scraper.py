@@ -163,7 +163,7 @@ class BetScraper():
 	def data2csv(self, filename):
 		# Overwrite to the specified file.
 		# Create it if it does not exist.
-		file = open("../html/" + filename, "w+")
+		file = open("../csv/" + filename, "w+")
 
 		# Dump all the data with CSV format
 		for i in range(len(self.data)):
