@@ -28,6 +28,8 @@ class BetScraper():
         print ("This process could take roughly 45 minutes.\n")
         html = self.__download_html(url)
         bs = BeautifulSoup(response.text)
+        print(bs.findAll("div",{"class": "odds-holder"}, limit = 15))
+        
         self.data.append(bs)
 
 
@@ -36,7 +38,7 @@ class BetScraper():
 		# Overwrite to the specified file.
 		# Create it if it does not exist.
         data = self.data
-        print(data)
+        #print(data)
         
         #file = open("./csv/" + 'bet2.csv', "w")
         #file.write(hola)
