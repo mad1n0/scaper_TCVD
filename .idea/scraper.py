@@ -28,8 +28,15 @@ class BetScraper():
         print ("This process could take roughly 45 minutes.\n")
         html = self.__download_html(url)
         bs = BeautifulSoup(response.text)
-        print(bs.findAll("div",{"class": "odds-holder"}, limit = 15))
-        
+        all_odds = bs.findAll("div",{"class": "odds-holder"}, limit = 60)
+        print(type(all_odds))
+        print (all_odds)
+        len_odds=len(all_odds)
+        data_odds=[]
+        for i in range(len_odds):
+            data_odds.append(float((all_odds[i].__str__()).replace('<div class="odds-holder">',"").replace('</div>',"").replace(" ","")))
+            
+        print(data_odds)
         self.data.append(bs)
 
 
