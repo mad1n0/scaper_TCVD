@@ -9,7 +9,7 @@ documentnumber=0
 start = datetime.datetime.now()
 while datetime.datetime.now() <= (start + datetime.timedelta(seconds=5)):
     scraper.scrape()
-    scraper.data2csv(i)
+    scraper.data2csv(documentnumber)
     documentnumber=documentnumber+1
     time.sleep(timetosleep)
 

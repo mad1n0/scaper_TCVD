@@ -40,7 +40,7 @@ class BetScraper():
         for i in range(len_odds):
             names.append(all_names[i].__str__())
             data_odds.append(float((all_odds[i].__str__()).replace('<div class="odds-holder">',"").replace('</div>',"").replace(" ","")))
-            
+
         self.data.append(bs)
 
 
