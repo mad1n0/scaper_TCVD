@@ -1,7 +1,4 @@
-import scrapy
 import requests
-import re
-import time
 from bs4 import BeautifulSoup
 from dateutil import parser
 import pandas as pd
@@ -12,7 +9,8 @@ class BetScraper():
 
     def __init__(self):
         self.url = "https://www.hltv.org/betting/money"
-        self.subdomain = "betting/money.com"
+        self.liveurl = "https://www.hltv.org/live"
+
         self.data = [] 
         self.response = requests.get(self.url)
         self.names = []
@@ -20,11 +18,14 @@ class BetScraper():
         self.merge = []
         self.dataframestomerge=[]
         self.timestamplist=[]
+        self.liveresponse =  requests.get(self.liveurl)
         
     def __download_html(self, url):
         response = requests.get(url)
     
-    
+    def __download_html2(self, liveurl):
+        liveresponse = requests.get(liveurl)
+        print(liveresponse)
     
     def scrape(self):
         response = self.response
@@ -43,6 +44,15 @@ class BetScraper():
 
         self.data.append(bs)
 
+
+    def scrape_realtimescore(self):
+        liveresponse = self.liveresponse
+        liveurl=self.liveurl
+        liveresponse = requests.get(liveurl)
+        print(liveresponse)
+        
+        #livedf = pd.read_html(liveresponse.text)
+        
 
 
     def data2csv(self, i):
@@ -71,6 +81,11 @@ class BetScraper():
         print(timestamplist)
         #for x in dfs2:
             #dfx = pd.read_csv('betdata'+str(x)+'.csv')
-            #merge.append(dfx)
+            #merge.append(dfx){"team": team, "odds": odds, "match": match, "provider":provider, "timestamp": timestamp}
             #merged = pd.concat(merge)
         #merged.to_csv('merged.csv', index=0)
+        
+        
+        
+        
+        

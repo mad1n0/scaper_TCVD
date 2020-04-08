@@ -14,3 +14,4 @@ while datetime.datetime.now() <= (start + datetime.timedelta(seconds=5)):
     time.sleep(timetosleep)
 
 scraper.mergedfs()
+scraper.scrape_realtimescore()
