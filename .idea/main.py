@@ -7,17 +7,27 @@ import requests
 import numpy as np
 import time
 #from scraper import BetScraper
-from scraper_hltv_cuotas import ScraperHltvOdds
+from scraper_hltv_odds import ScraperHltvOdds
+from scraper_hltv_live import ScraperHltvLive
+
+
 
 output_file = "dataset.csv"
 
-url="https://www.hltv.org/betting/money"
-
-scraper=ScraperHltvOdds(url=url)
+url_odds="https://www.hltv.org/betting/money"
+url_live="https://www.hltv.org/matches"
+scraper=ScraperHltvOdds(url=url_odds)
 scraper.scraping_bets()
 print(pd.DataFrame(scraper.data).head())
 
 pd.DataFrame(scraper.data).to_csv(output_file,index=False)
+
+
+scraper=ScraperHltvLive(url=url_live)
+scraper.scraping_results()
+print(pd.DataFrame(scraper.data).head())
+
+
 
 
 #timetosleep=1
