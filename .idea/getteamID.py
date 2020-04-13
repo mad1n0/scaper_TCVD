@@ -35,10 +35,11 @@ for a in main_table.find_all('a', href=True):
     team_list[team_id] = team_name.replace('%20'," ")
     
     
+df = pd.DataFrame()
+df['team_name']=team_list.values()
+df['team_id']=list(team_list.keys())
 
-#data = {'team_id': team_list.keys(), 'team_name': team_list[team_list.keys()]}
-#print(data)
-#dfdata=pd.DataFrame(data)
-#print(dfdata)
-IDdf = pd.DataFrame.from_dict(team_list, orient= 'index', columns = ['name'])
-print(IDdf)
+
+
+def get_df():
+    return df
