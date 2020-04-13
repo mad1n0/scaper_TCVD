@@ -53,6 +53,3 @@ class ScraperHltvLive():
             
         self.matches=matches_name
         self.data=data_all
-import requests
-
-r = requests.get("http://www.example.com", headers=headers)
