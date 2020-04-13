@@ -17,8 +17,9 @@ class ScraperHltvLive():
         #self.liveresponse =  requests.get(self.liveurl)
 
     def scraping_results(self):
-        #Extract all live matches scores
+        #Extract all live matches scor
         data_raw=self.body
+        df_raw = pd.concat(data_raw)
         self.data_raw.append(df_raw)
         
         #The data is separated by every match
