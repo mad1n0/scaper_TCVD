@@ -12,16 +12,13 @@ class ScraperHltvLive():
     def __init__(self,url):
         #Initializing all the variables which define the scraper
         headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,\
-            */*;q=0.8",
-            "Accept-Encoding": "gzip, deflate, sdch, br",
-            "Accept-Language": "en-US,en;q=0.8",
+            "Accept": "text/html",
+            "Accept-Language": "es-ES,en;q=0.8",
             "Cache-Control": "no-cache",
             "dnt": "1",
             "Pragma": "no-cache",
             "Upgrade-Insecure-Requests": "1",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/5\
-            37.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
             'Content-Type': 'text/html'
             }
         self.url, self.response=url, requests.get(url,headers=headers)
@@ -36,7 +33,6 @@ class ScraperHltvLive():
         
         #The data is separated by every match
         live_matches_raw=data_raw.find_all('div',{'class':"live-match"})
-
 
 
         for match in live_matches_raw:

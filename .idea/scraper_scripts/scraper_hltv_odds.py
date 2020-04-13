@@ -20,8 +20,7 @@ class ScraperHltvOdds():
             "dnt": "1",
             "Pragma": "no-cache",
             "Upgrade-Insecure-Requests": "1",
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/5\
-            37.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
             'Content-Type': 'text/html'
             }
         try:
