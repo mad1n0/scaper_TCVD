@@ -8,7 +8,7 @@ Created on Mon Apr 13 14:08:51 2020
 
 from bs4 import BeautifulSoup
 import requests
-
+import pandas as pd
 
 
 url = "https://www.hltv.org/stats/teams?startDate=all&matchType=Online&minMapCount=0"
@@ -31,7 +31,14 @@ for a in main_table.find_all('a', href=True):
     team_name = substring_after(link, team_id + '/')
     team_name = team_name.split('?')[0]
     team_name = team_name
+    #team_id = int(team_id)
     team_list[team_id] = team_name.replace('%20'," ")
     
     
-print(team_list)
+
+#data = {'team_id': team_list.keys(), 'team_name': team_list[team_list.keys()]}
+#print(data)
+#dfdata=pd.DataFrame(data)
+#print(dfdata)
+IDdf = pd.DataFrame.from_dict(team_list, orient= 'index', columns = ['name'])
+print(IDdf)
