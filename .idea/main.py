@@ -7,12 +7,12 @@ import requests
 import numpy as np
 import time
 #from scraper import BetScraper
-from scraper_hltv_odds import ScraperHltvOdds
-from scraper_hltv_live import ScraperHltvLive
+from scraper_scripts.scraper_hltv_odds import ScraperHltvOdds
+from scraper_scripts.scraper_hltv_live import ScraperHltvLive
 
 
 
-output_file = "dataset.csv"
+output_file = "data/dataset.csv"
 
 url_odds="https://www.hltv.org/betting/money"
 url_live="https://www.hltv.org/matches"
