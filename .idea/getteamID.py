@@ -11,7 +11,7 @@ import requests
 
 
 
-url = "https://www.hltv.org/stats/teams?startDate=all"
+url = "https://www.hltv.org/stats/teams?startDate=all&matchType=Online&minMapCount=0"
 request = requests.get(url).content
 
 soup = BeautifulSoup(request)
