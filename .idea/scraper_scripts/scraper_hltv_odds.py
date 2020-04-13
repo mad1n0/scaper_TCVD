@@ -12,10 +12,8 @@ class ScraperHltvOdds():
     def __init__(self,url):
         #Initializing all the variables which define the scraper
         headers = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,\
-            */*;q=0.8",
-            "Accept-Encoding": "gzip, deflate, sdch, br",
-            "Accept-Language": "en-US,en;q=0.8",
+            "Accept": "text/html",
+            "Accept-Language": "es-ES,en;q=0.8",
             "Cache-Control": "no-cache",
             "dnt": "1",
             "Pragma": "no-cache",
