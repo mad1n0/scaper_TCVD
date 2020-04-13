@@ -11,7 +11,23 @@ class ScraperHltvOdds():
 
     def __init__(self,url):
         #Initializing all the variables which define the scraper
-        self.url, self.response=url, requests.get(url,headers={'Content-Type': 'text/html'})
+        headers = {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,\
+            */*;q=0.8",
+            "Accept-Encoding": "gzip, deflate, sdch, br",
+            "Accept-Language": "en-US,en;q=0.8",
+            "Cache-Control": "no-cache",
+            "dnt": "1",
+            "Pragma": "no-cache",
+            "Upgrade-Insecure-Requests": "1",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/5\
+            37.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36",
+            'Content-Type': 'text/html'
+            }
+        try:
+            self.url, self.response=url, requests.get(url,headers=headers,timeout=5)
+        except requests.exceptions.RequestException:
+            pass
         self.body=bs(self.response.text)
         self.data_raw, self.names, self.dfs, self.merge, self.dataframes_to_merge, self.timestamp_list,self.data,self.providers = [],[],[],[],[],[],[],[]
         #self.liveresponse =  requests.get(self.liveurl)
