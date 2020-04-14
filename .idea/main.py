@@ -18,7 +18,7 @@ from scraper_scripts.getteamID import get_df
 noliving_max=100
 nolivingsteps=0
 
-#The time between calls is defined taking account the robots.txt advice of one call per second. In order to follow the instruction we used 2 seconds of wait in order to follow it.
+#The time between calls is defined taking account the robots.txt advice of one call per second. In order to follow the instruction we used 30 seconds of wait in order to follow it.
 timetosleep=30
 
 #Filename for source and output
@@ -52,8 +52,7 @@ while 1==1:
         odds_data=scraper.scraping_bets()
         scraping_dataset=odds_data
     
-        #scraping_dataset['Score']="Unknown"
-        
+      
         timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         scraping_dataset['Timestamp']=timestamp
     
@@ -95,12 +94,11 @@ while 1==1:
     odds_data=scraper.scraping_bets()
     scraping_dataset=odds_data
     
-    #scraping_dataset['Score']="Unknown"
-    #scraping_dataset['Living']="Unknown"
     timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     scraping_dataset['Timestamp']=timestamp
     scraping_dataset['Score']="Unknown"
     scraping_dataset['Living']="NoLiving"
+
     #ADD SCORE INFO to the scraping dataset
     #SE PUEDE HACER MEJOR Y QUE BUSQUE LOS REGISTROS UTILES Y NO PASAR POR TODOS
     for i in range(len(scraping_dataset)):
@@ -112,7 +110,6 @@ while 1==1:
         reg_bet=(score_table['match']==int(bet['Match'])) & (score_table['team']==team.values[0])
         if any(reg_bet):
             score=score_table[reg_bet]['score']
-            #time_score=score_table[reg_bet]['timestamp']
             scraping_dataset['Score'][i]=score.values[0]
             scraping_dataset['Living'][i]='Living'
             
