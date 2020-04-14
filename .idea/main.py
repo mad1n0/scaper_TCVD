@@ -19,7 +19,7 @@ noliving_max=100
 nolivingsteps=0
 
 #The time between calls is defined taking account the robots.txt advice of one call per second. In order to follow the instruction we used 2 seconds of wait in order to follow it.
-timetosleep=2
+timetosleep=30
 
 #Filename for source and output
 orig_file = "data/dataset_orig.csv"
@@ -99,7 +99,8 @@ while 1==1:
     #scraping_dataset['Living']="Unknown"
     timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     scraping_dataset['Timestamp']=timestamp
-
+    scraping_dataset['Score']="Unknown"
+    scraping_dataset['Living']="NoLiving"
     #ADD SCORE INFO to the scraping dataset
     #SE PUEDE HACER MEJOR Y QUE BUSQUE LOS REGISTROS UTILES Y NO PASAR POR TODOS
     for i in range(len(scraping_dataset)):
@@ -108,19 +109,17 @@ while 1==1:
         team=teams_id[teams_id.iloc[:,0]==bet['Team']].iloc[:,1]
         if len(team)==0:
             continue
-        reg_bet=(score_table['match']==bet['Match']) & (score_table['team']==team.values[0])
+        reg_bet=(score_table['match']==int(bet['Match'])) & (score_table['team']==team.values[0])
         if any(reg_bet):
             score=score_table[reg_bet]['score']
             #time_score=score_table[reg_bet]['timestamp']
-            scraping_dataset['Score'][i]=score
+            scraping_dataset['Score'][i]=score.values[0]
             scraping_dataset['Living'][i]='Living'
             
     #MERGE previous scraping data to new
     dataset_orig=pd.read_csv(orig_file)
     merged_dataset=BetScraper().gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
+    merged_dataset=merged_dataset[merged_dataset['Living']=='Living']
     pd.DataFrame(merged_dataset).to_csv(merged_file,index=False)
-    print(any(reg_bet))
-    print(score_table['team'])
-    print(np.unique(scraping_dataset['Team']))
     nolivingsteps=0
     time.sleep(timetosleep)
