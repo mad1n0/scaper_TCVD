@@ -7,6 +7,7 @@ import requests
 import numpy as np
 import time
 
+
 class ScraperHltvLive():
 
     def __init__(self,url):
@@ -27,29 +28,44 @@ class ScraperHltvLive():
         #self.liveresponse =  requests.get(self.liveurl)
 
     def scraping_results(self):
-        #Extract all live matches scores
         data_raw=self.body
         self.data_raw.append(df_raw)
+
+        #### ID_MATCHES ####
+        tables=data_raw.find_all(lambda tag: tag.name == 'table' and tag.get('class') == ['table'])
+        id_matches=np.array([tab.get('data-livescore-match') for tab in tables])
+        id_matches=id_matches[id_matches!=None]
+
+        num_regs=2*len(id_matches)
+        team0=np.arange(0,num_regs-1,step=2)
+        team1=np.arange(1,num_regs,step=2)
         
-        #The data is separated by every match
-        live_matches_raw=data_raw.find_all('div',{'class':"live-match"})
+        if num_regs>2:
+            matches_id=np.zero(num_regs)
+            for i in range(len(id_matches)):
+                    matches_id[team0[i]]=id_matches[i]
+                    matches_id[team1[i]]=id_matches[i]
+        elif num_regs==2:
+            matches_id=np.array([id_matches,id_matches])
+        
+        matches_id=matches_id.astype('int')
 
 
-        for match in live_matches_raw:
-            #Score of the losing team
-            losing_score=match.find('span',{'class':"trailing"}).get_text()
-                        
-            #Score of the winning team
-            winning_score=match.find('span',{'class':"leading"}).get_text()
-            
-            #Score for a tied match
-            tie_score=match.find('span',{'class':"tie"}).get_text()
-            
-            ###HAY QUE VER COMO DISTINGUIR EL NOMBRE DEL EQUIPO QUE ESTÁ GANANDO CON EL NOMBRE DEL EQUIPO QUE ESTÁ PERDIENDO Y SU SCORE
-            
-            team_names=match.find_all('span',{'class':"team-name"})
-            
-            match_name.append(team_names[0].get_text()+'-vs-'+team_names[1].get_text()+'-yearmmdd')
-            
-        self.matches=matches_name
-        self.data=data_all
+
+        #### SCORES ####
+        scores_maps=np.array(data_raw.find_all('span'))
+        
+        p=[("data-livescore-maps-won-for" in x.__str__()) for x in scores_maps]
+        scores_maps=scores_maps[p]
+        score_team=[]
+        
+        for score in scores_maps:
+            score_team.append([score['data-livescore-team'],score.get_text()])
+        
+        #### SCORES DATAFRAME ####
+        score_table=pd.DataFrame()
+        score_table['team']=np.array(score_team)[:,0]
+        score_table['score']=np.array(score_team)[:,1]
+        score_table['matches']=matches_id
+        self.data=score_table
+        return score_table
