@@ -12,33 +12,3 @@ A pesar de esta organización visualmente sencilla, hemos comprobado las dificul
 Las ideas que nos habíamos planteado en la introducción se iban viendo posibles de responder a medida que estudiabamos la estructura de la web y la posibilidad del código.
 
 
-
-## Metodología del scraping
-Primero 
-
-
-Hemos cambiado las cabeceras para ser distinguidos de los scripts
-Controlamos el tema de timeouts por si se bloquea la página o perdemos la conexión
-No usamos sesiones porque no es necesario loguearse en la página
-
-) el archivo robots.txt,
-2) el mapa del sitio web,
-3) su tamaño,
-4) la tecnología usada y
-5) el propietario del mismo.
-
-https://www.hltv.org/robots.txt
-User-agent: 360Spider
-Disallow: /stats
-
-User-agent: *
-crawl-delay: 1
-
-User-agent: Yandex
-crawl-delay: 1
-
-User-agent: Yandex
-Disallow: /stats
-
-User-agent: coccocbot-web
-Disallow: /stats
