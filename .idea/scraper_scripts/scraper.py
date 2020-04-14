@@ -85,7 +85,11 @@ class BetScraper():
             #merged = pd.concat(merge)
         #merged.to_csv('merged.csv', index=0)
         
-        
+    def gen_merged_dataset(self,merged_filename,data_orig,data_new):
+        data_orig=pd.read_csv(merged_filename)
+        merged_dataset=pd.concat([data_orig,data_new])
+        return merged_dataset
+
         
         
         
