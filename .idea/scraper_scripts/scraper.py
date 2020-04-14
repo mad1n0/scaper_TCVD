@@ -1,15 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from dateutil import parser
-import pandas as pd
 import datetime
 from scraper_scripts.getteamID import get_df
 import requests
 from dateutil import parser
-import datetime
 import pandas as pd
 from bs4 import BeautifulSoup as bs
-import requests
 import numpy as np
 import time
 
@@ -60,7 +56,6 @@ class BetScraper():
         liveresponse = requests.get(liveurl)
         print(liveresponse)
         
-        #livedf = pd.read_html(liveresponse.text)
 
     def data2csv(self, i):
 		# Overwrite to the specified file.
@@ -80,17 +75,12 @@ class BetScraper():
 
         #Este método lo que hace en realidad es concatenar los dataframes usados para generar la lista de CSV's "betdata", pero no los
         #abre directamente. ¿Igual sería mejor por si se corta el proceso hacerlo escribiendo documentos cada vez?
-
         timestamplist=self.timestamplist
         dataframestomerge = self.dataframestomerge
         dataframestomerge=pd.concat(dataframestomerge)
         dataframestomerge.to_csv('merged_bets.csv', index=0)
         print(timestamplist)
-        #for x in dfs2:
-            #dfx = pd.read_csv('betdata'+str(x)+'.csv')
-            #merge.append(dfx){"team": team, "odds": odds, "match": match, "provider":provider, "timestamp": timestamp}
-            #merged = pd.concat(merge)
-        #merged.to_csv('merged.csv', index=0)
+
         
     def score_filler(scraping_dataset,living):
         
@@ -100,7 +90,6 @@ class BetScraper():
         teams_id=get_df()
         
         #ADD SCORE INFO to the scraping dataset
-        #SE PUEDE HACER MEJOR Y QUE BUSQUE LOS REGISTROS UTILES Y NO PASAR POR TODOS
         for i in range(len(scraping_dataset)):
             bet=scraping_dataset.iloc[i,:]
             teams_id[teams_id==bet['Team']].iloc[:,0]

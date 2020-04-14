@@ -97,6 +97,5 @@ class ScraperHltvOdds():
         data_all['Team']=team_elements
         data_all['Match']=match_elements
         data_all['Timestamp']="fecha"
-        #data_all=pd.DataFrame(data_all)
         self.data=data_all
         return data_all
