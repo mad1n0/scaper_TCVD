@@ -8,7 +8,7 @@ import numpy as np
 import time
 #from scraper import BetScraper
 from scraper_scripts.scraper_hltv_odds import ScraperHltvOdds
-from scraper_scripts.scraper_hltv_live import ScraperHltvLive
+#from scraper_scripts.scraper_hltv_live import ScraperHltvLive
 
 
 
@@ -23,9 +23,9 @@ print(pd.DataFrame(scraper.data).head())
 pd.DataFrame(scraper.data).to_csv(output_file,index=False)
 
 
-scraper=ScraperHltvLive(url=url_live)
-scraper.scraping_results()
-print(pd.DataFrame(scraper.data).head())
+#scraper=ScraperHltvLive(url=url_live)
+#scraper.scraping_results()
+#print(pd.DataFrame(scraper.data).head())
 
 
 

@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup as bs
 import requests
 import numpy as np
 import time
+from getMatchId import getidlist
+
 class ScraperHltvOdds():
 
     def __init__(self,url):
@@ -58,6 +60,9 @@ class ScraperHltvOdds():
         mathes_per_row=[]
         data_all=pd.DataFrame()
         
+        idlist = getidlist()
+
+        
         for i in range(num_matches):
             mathes_per_row.append(df_raw[0].iloc[team0[i]].__str__() +"-vs-"+df_raw[0].iloc[team1[i]].__str__()+"-yearmonthday")
             mathes_per_row.append(df_raw[0].iloc[team0[i]].__str__() +"-vs-"+df_raw[0].iloc[team1[i]].__str__()+"-yearmonthday")
@@ -71,7 +76,8 @@ class ScraperHltvOdds():
         bets_elements=[]
         provider_elements=[]
         team_elements=[]
-        match_elements=[]
+        match_elements=[]        
+        
 
         j=0
         for row in df_raw.values:
@@ -81,7 +87,7 @@ class ScraperHltvOdds():
             for bet in bets:
                 bets_elements.append(bet)
                 provider_elements.append(providers[i])
-                match_elements.append(mathes_per_row[j])
+                match_elements.append(idlist[j])
                 team_elements.append(team)
                 i=i+1
             j=j+1
