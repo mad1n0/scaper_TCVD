@@ -9,7 +9,7 @@ import time
 from scraper_scripts.scraper import BetScraper
 from scraper_scripts.scraper_hltv_odds import ScraperHltvOdds
 from scraper_scripts.scraper_hltv_live import ScraperHltvLive
-
+from os import path
 #INIT of static variables
 
 #How many times not adding info when there is no match going on
@@ -33,12 +33,12 @@ while 1==1:
     score_table=scraper.scraping_results()
 
     #NO LIVING MATCH behaviour
-    if score_table==1 and nolivingsteps<noliving_max:
+    if ((not (isinstance(score_table,pd.DataFrame))) and (nolivingsteps<noliving_max)):
         print('There is no live match and it is not going to update the dataset')
         nolivingsteps=nolivingsteps+1
         time.sleep(timetosleep)
         continue
-    elif score_table==1 and nolivingsteps==noliving_max:
+    elif ((not (isinstance(score_table,pd.DataFrame))) and (nolivingsteps==noliving_max)):
         nolivingsteps=0
         
         scraper=ScraperHltvOdds(url=url_odds)
@@ -52,13 +52,36 @@ while 1==1:
     
         scraping_dataset['Living']='NoLiving'
         
-        dataset_orig=pd.read_csv(orig_file)
+        if path.exists(orig_file):
+            dataset_orig=pd.read_csv(orig_file)
+        else:
+            dataset_orig=scraping_dataset
+            pd.DataFrame(dataset_orig).to_csv(orig_file,index=False)
+        
         merged_dataset=gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
         pd.DataFrame(merged_dataset).to_csv(merged_file,index=False)
         continue
     
     
     #LIVING MATCH behaviour
+   
+    if path.exists(orig_file):
+        dataset_orig=pd.read_csv(orig_file)
+    else:
+        scraper=ScraperHltvOdds(url=url_odds)
+        odds_data=scraper.scraping_bets()
+        scraping_dataset=odds_data
+    
+        scraping_dataset['Score']="Unknown"
+        scraping_dataset['Living']="Unknown"
+        timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        scraping_dataset['Timestamp']=timestamp
+    
+        scraping_dataset['Living']='NoLiving'
+
+        dataset_orig=scraping_dataset
+        pd.DataFrame(dataset_orig).to_csv(orig_file,index=False)
+        
     
     #GENERATE ODDS dataset and init the full scraping dataset
     scraper=ScraperHltvOdds(url=url_odds)

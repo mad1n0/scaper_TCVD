@@ -41,7 +41,7 @@ class ScraperHltvLive():
         team1=np.arange(1,num_regs,step=2)
         
         if num_regs>2:
-            matches_id=np.zero(num_regs)
+            matches_id=np.zeros(num_regs)
             for i in range(len(id_matches)):
                     matches_id[team0[i]]=id_matches[i]
                     matches_id[team1[i]]=id_matches[i]
@@ -68,6 +68,7 @@ class ScraperHltvLive():
         score_table=pd.DataFrame()
         score_table['team']=np.array(score_team)[:,0]
         score_table['score']=np.array(score_team)[:,1]
+        
         score_table['match']=matches_id
         score_table['timestamp']=timestamp
         self.data=score_table
