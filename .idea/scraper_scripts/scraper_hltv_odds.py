@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup as bs
 import requests
 import numpy as np
 import time
-from getMatchId import getidlist
+from scraper_scripts.getMatchId import getidlist
 
 class ScraperHltvOdds():
 

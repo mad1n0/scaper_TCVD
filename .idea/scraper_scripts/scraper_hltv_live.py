@@ -29,8 +29,8 @@ class ScraperHltvLive():
 
     def scraping_results(self):
         data_raw=self.body
-        self.data_raw.append(df_raw)
-
+        self.data_raw.append(data_raw)
+        timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         #### ID_MATCHES ####
         tables=data_raw.find_all(lambda tag: tag.name == 'table' and tag.get('class') == ['table'])
         id_matches=np.array([tab.get('data-livescore-match') for tab in tables])
@@ -47,7 +47,9 @@ class ScraperHltvLive():
                     matches_id[team1[i]]=id_matches[i]
         elif num_regs==2:
             matches_id=np.array([id_matches,id_matches])
-        
+        else:
+            message='There is no live match'
+            return 1
         matches_id=matches_id.astype('int')
 
 
@@ -66,6 +68,7 @@ class ScraperHltvLive():
         score_table=pd.DataFrame()
         score_table['team']=np.array(score_team)[:,0]
         score_table['score']=np.array(score_team)[:,1]
-        score_table['matches']=matches_id
+        score_table['match']=matches_id
+        score_table['timestamp']=timestamp
         self.data=score_table
         return score_table

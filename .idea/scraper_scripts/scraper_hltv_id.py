@@ -36,4 +36,4 @@ class ScraperHltvGetTeamIds():
             #for st in tag_a:
                 #print(st.text)
         
-        print(bs4)
+        #print(bs4)

@@ -31,7 +31,7 @@ for link in soup.find_all('a'):
         linklist.append(stringey2)
 
         
-print(linklist)
+#print(linklist)
 
 
 
