@@ -136,5 +136,4 @@ class BetScraper():
                 tablesBO5.append(element)
             if(element.find('td', attrs = {'class' : "bestof"}).get_text() == 'Best of 1'):
                 tablesBO1.append(element)
-
-    return tablesBO3, tablesBO5, tablesBO1
+        return tablesBO3, tablesBO5, tablesBO1
