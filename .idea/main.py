@@ -10,6 +10,8 @@ from scraper_scripts.scraper import BetScraper
 from scraper_scripts.scraper_hltv_odds import ScraperHltvOdds
 from scraper_scripts.scraper_hltv_live import ScraperHltvLive
 from os import path
+from scraper_scripts.getteamID import get_df
+
 #INIT of static variables
 
 #How many times not adding info when there is no match going on
@@ -32,6 +34,11 @@ while 1==1:
     scraper=ScraperHltvLive(url=url_live)
     score_table=scraper.scraping_results()
 
+    scraper=ScraperHltvOdds(url=url_odds)
+    odds_data=scraper.scraping_bets()
+    scraping_dataset=odds_data
+
+    
     #NO LIVING MATCH behaviour
     if ((not (isinstance(score_table,pd.DataFrame))) and (nolivingsteps<noliving_max)):
         print('There is no live match and it is not going to update the dataset')
@@ -45,35 +52,35 @@ while 1==1:
         odds_data=scraper.scraping_bets()
         scraping_dataset=odds_data
     
-        scraping_dataset['Score']="Unknown"
-        scraping_dataset['Living']="Unknown"
+        #scraping_dataset['Score']="Unknown"
+        
         timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         scraping_dataset['Timestamp']=timestamp
     
         scraping_dataset['Living']='NoLiving'
         
-        if path.exists(orig_file):
-            dataset_orig=pd.read_csv(orig_file)
+        if path.exists(merged_file):
+            dataset_orig=pd.read_csv(merged_file)
         else:
             dataset_orig=scraping_dataset
-            pd.DataFrame(dataset_orig).to_csv(orig_file,index=False)
+            pd.DataFrame(dataset_orig).to_csv(merged_file,index=False)
         
-        merged_dataset=gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
+        merged_dataset=BetScraper().gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
         pd.DataFrame(merged_dataset).to_csv(merged_file,index=False)
         continue
     
     
     #LIVING MATCH behaviour
    
-    if path.exists(orig_file):
-        dataset_orig=pd.read_csv(orig_file)
+    if path.exists(merged_file):
+        dataset_orig=pd.read_csv(merged_file)
     else:
         scraper=ScraperHltvOdds(url=url_odds)
         odds_data=scraper.scraping_bets()
         scraping_dataset=odds_data
     
-        scraping_dataset['Score']="Unknown"
-        scraping_dataset['Living']="Unknown"
+        #scraping_dataset['Score']="Unknown"
+
         timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
         scraping_dataset['Timestamp']=timestamp
     
@@ -88,8 +95,8 @@ while 1==1:
     odds_data=scraper.scraping_bets()
     scraping_dataset=odds_data
     
-    scraping_dataset['Score']="Unknown"
-    scraping_dataset['Living']="Unknown"
+    #scraping_dataset['Score']="Unknown"
+    #scraping_dataset['Living']="Unknown"
     timestamp=datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     scraping_dataset['Timestamp']=timestamp
 
@@ -97,17 +104,23 @@ while 1==1:
     #SE PUEDE HACER MEJOR Y QUE BUSQUE LOS REGISTROS UTILES Y NO PASAR POR TODOS
     for i in range(len(scraping_dataset)):
         bet=scraping_dataset.iloc[i,:]
-        reg_bet=(score_table['match']==bet['Match']) & (score_table['team']==bet['Team'])
+        teams_id=get_df()
+        team=teams_id[teams_id.iloc[:,0]==bet['Team']].iloc[:,1]
+        if len(team)==0:
+            continue
+        reg_bet=(score_table['match']==bet['Match']) & (score_table['team']==team.values[0])
         if any(reg_bet):
             score=score_table[reg_bet]['score']
             #time_score=score_table[reg_bet]['timestamp']
             scraping_dataset['Score'][i]=score
             scraping_dataset['Living'][i]='Living'
-    
+            
     #MERGE previous scraping data to new
     dataset_orig=pd.read_csv(orig_file)
-    merged_dataset=gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
+    merged_dataset=BetScraper().gen_merged_dataset(merged_file,dataset_orig,scraping_dataset)
     pd.DataFrame(merged_dataset).to_csv(merged_file,index=False)
-
+    print(any(reg_bet))
+    print(score_table['team'])
+    print(np.unique(scraping_dataset['Team']))
     nolivingsteps=0
     time.sleep(timetosleep)
